@@ -1,0 +1,11 @@
+One-line redaction of identifiable information. 
+-------------------------------------------------
+```{r}
+d0 = read.csv('opus_norming.csv')
+key = NULL;
+key$key = c(1:length(unique(d0$workerID))) 
+key$workerID = unique(sort(d0$workerID))
+d0$workerID <- match(d0$workerID, unique(sort(d0$workerID)))
+write.csv(d0,'opus_norming.csv',row.names = F)
+write.csv(key,"key.csv",row.names = F)
+```
