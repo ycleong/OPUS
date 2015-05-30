@@ -116,7 +116,7 @@ h2 {
     margin-right: 25px;
 }
 
-.plot, .question {
+.plot, .question, .slider_container {
     width: 800px;
     float: left;
     display: inline-block;
@@ -187,13 +187,13 @@ table {
 	margin: auto;
 }
 
-.slider_table .left_table {
+.slider_table .left {
 	display: inline;
 	text-align: left;
 	float: left;
 }
 
-.slider_table .right_table {
+.slider_table .right {
 	display: inline;
 	text-align: right;
 	float: right;

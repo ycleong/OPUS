@@ -26,10 +26,14 @@ function q_template(slide_name, phase) {
           this.complete = false;
           exp.trialT = Date.now();
           
+          //$('#'+slide_name+' .question').hide();
           $('#'+slide_name+' .warning').hide();
           $('#'+slide_name+' .correct').hide();
           $('#'+slide_name+' .incorrect').hide();
           $('#'+slide_name+' .continue').hide();
+          
+          //this.init_sliders();
+          //exp.sliderPost = null; //erase current slider value
       },
       
       select: function() {
@@ -52,6 +56,10 @@ function q_template(slide_name, phase) {
                   $('#'+slide_name+' .correct').hide();
                   $('#'+slide_name+' .incorrect').show();
           }}},
+//    init_sliders: function() {
+//            utils.make_slider('#'+slide_name+' .slider', function(event, ui) {
+//                exp.sliderPost = ui.value;
+//            })},
       
       nextTrial: function() {
           $("." + ans.attr('for')).prop('checked', false)
@@ -62,7 +70,7 @@ function q_template(slide_name, phase) {
       
       log_responses: function() {
           exp.data_trials.push({
-             "movie": this.stim.title,
+             "movie": this.stim.poster,
 			 "attempts": this.attempts,
               "clicks": this.clicks,
              "rt_in_seconds": (Date.now() - exp.trialT)/1000
@@ -98,8 +106,8 @@ function make_slides(f) {
             
             $(slide_name).show();
             
-            $('#'+slide_name+' .Poster1').attr('src', 'images/' + this.stim[0].poster);
-            $('#'+slide_name+' .Poster2').attr('src', 'images/' + this.stim[1].poster);
+            $('#'+slide_name+' .Poster1').attr('src', 'images/' + this.stim[0]);
+            $('#'+slide_name+' .Poster2').attr('src', 'images/' + this.stim[1]);
             
             $('#'+slide_name+' .left').show();
             $('#'+slide_name+' .right').show();
@@ -111,7 +119,7 @@ function make_slides(f) {
                 if (keyCode == 90) {
                     $(document).unbind('keydown');
                     var t = Date.now();
-                    _s.key = 1;
+                    _s.key = 0;
                     _s.pick =  _s.stim[0];
                     setTimeout(function(){$('#'+slide_name+' .right').hide()}, 50)
                     setTimeout(function(){_s.nextTrial()},1500);
@@ -119,12 +127,13 @@ function make_slides(f) {
                 // If participant selects the option on the right (M = 77)
                 else if (keyCode == 77) {
                     $(document).unbind('keydown');
-                    _s.key = 2;
+                    _s.key = 1;
                     _s.pick = _s.stim[1];
                     setTimeout(function(){$('#'+slide_name+' .left').hide()}, 50);
                     setTimeout(function(){_s.nextTrial()},1500);
                 }});
         },
+        
         nextTrial: function() {
         this.log_responses();
         _stream.apply(this);
@@ -132,8 +141,8 @@ function make_slides(f) {
     
     log_responses: function() {
         exp.data_trials.push({
-            "options": [this.stim[0].title, this.stim[1].title],
-            "condition": [this.stim[0].cond, this.stim[1].cond],
+            "options": [this.stim[0], this.stim[1]],
+            "condition": conditions_by_phase[0].shift(),
             "key": this.key,
             "choice": this.pick,
             "rt_in_seconds": (Date.now() - exp.trialT)/1000
@@ -147,19 +156,19 @@ function make_slides(f) {
     slides.choice_controls2 = slide({name: "choice_controls2"});
     
     slides.choice_screen2 = slide({
-        name: "choice_screen2",
+        name: "choice_screen",
         present: choices_by_phase[1],
         present_handle: function(stim) {
             $(document).unbind('keydown');
             
             this.stim = stim;
             exp.trialT = Date.now();
-            var slide_name = "choice_screen2";
+            var slide_name = "choice_screen";
             
             $(slide_name).show();
             
-            $('#'+slide_name+' .Poster1').attr('src', 'images/' + this.stim[0].poster);
-            $('#'+slide_name+' .Poster2').attr('src', 'images/' + this.stim[1].poster);
+            $('#'+slide_name+' .Poster1').attr('src', 'images/' + this.stim[0]);
+            $('#'+slide_name+' .Poster2').attr('src', 'images/' + this.stim[1]);
             
             $('#'+slide_name+' .left').show();
             $('#'+slide_name+' .right').show();
@@ -171,7 +180,7 @@ function make_slides(f) {
                 if (keyCode == 90) {
                     $(document).unbind('keydown');
                     var t = Date.now();
-                    _s.key = 1;
+                    _s.key = 0;
                     _s.pick =  _s.stim[0];
                     setTimeout(function(){$('#'+slide_name+' .right').hide()}, 50)
                     setTimeout(function(){_s.nextTrial()},1500);
@@ -179,7 +188,7 @@ function make_slides(f) {
                 // If participant selects the option on the right (M = 77)
                 else if (keyCode == 77) {
                     $(document).unbind('keydown');
-                    _s.key = 2;
+                    _s.key = 1;
                     _s.pick = _s.stim[1];
                     setTimeout(function(){$('#'+slide_name+' .left').hide()}, 50);
                     setTimeout(function(){_s.nextTrial()},1500);
@@ -192,8 +201,8 @@ function make_slides(f) {
     
     log_responses: function() {
         exp.data_trials.push({
-            "options": this.stim,
-            "condition": [this.stim[0].cond, this.stim[1].cond],
+            "options": [this.stim[0], this.stim[1]],
+            "condition": conditions_by_phase[1].shift(),
             "key": this.key,
             "choice": this.pick,
             "rt_in_seconds": (Date.now() - exp.trialT)/1000
@@ -251,10 +260,11 @@ function init() {
       screenUW: exp.width
     };
   //blocks of the experiment:
-    exp.structure=['i0', 'comprehension', 'choice_controls', 'choice_screen', 'halfway_there',
-                   'comprehension2', 'choice_controls2', 'choice_screen2',
-                   'survey', 'thanks'];
+    //exp.structure=['i0', 'comprehension', 'choice_controls', 'choice_screen', 'halfway_there',
+    //               'comprehension2', 'choice_controls2', 'choice_screen2',
+    //               'survey', 'thanks'];
     //exp.structure = ['i0', 'choice_screen'];
+    exp.structure = ['i0', 'comprehension', 'survey', 'thanks'];
   exp.data_trials = [];
   //make corresponding slides:
   exp.slides = make_slides(exp);

@@ -339,47 +339,31 @@ movies_by_phase[1].shuffle();
 // Get all possible combinations of conditions (counterbalanced by side)
 var all_comb = [];
 getAllPossibleCombinations([[0],[1],[2],[3],[4],[5],[6],[7]], 2, all_comb);
-all_comb = all_comb.concat(all_comb.map(function (e) {return e.reverse()}));
-
+all_comb_reverse = all_comb.slice(0).map(function(e){return e.slice(0)});
+all_comb_reverse.map(function(e){return e.reverse()});
+all_comb = all_comb.concat(all_comb_reverse);
 
 ///// ——————————————————— TRIAL ORDER (CHOICE TASK)  ——————————————————— /////
 // Randomize order of choices for each phase
-conditions_by_phase = [all_comb.slice(), all_comb.slice()];
+conditions_by_phase = [all_comb.slice(0).map(function(e){return e.slice(0)}), all_comb.slice(0).map(function(e){return e.slice(0)})];
 conditions_by_phase.map(function(e){return e.shuffle();});
 
-// Create vector of available movies to draw from
-// (starts out as the movies assigned to each phase repeated 7 times)
-available_movies = movies_by_phase.slice();
-available_movies = available_movies.map(function(e) {
-    // Repeat elements four times
-    e_tmp = e.slice();
-    while (e_tmp.length < all_comb.length*2) {e_tmp = e_tmp.concat(e.slice())};
-    return e_tmp;
-});
-
-// Draw from vector of available movies to assign images to choices
-choices_by_phase = [[], []];
-
-for (phase = 0; phase < conditions_by_phase.length; phase++) { // Iterate over phases
-    for (trial = 0; trial < conditions_by_phase[0].length; trial++) { // Iterate over trials
-        // Randomly assign movies for this trial
-        choices_by_phase[phase] = choices_by_phase[phase].concat([
-            conditions_by_phase[phase][trial].map(function(e) {
-                // Get movie from this phase in this condition
-                tmp_matches = findObjectByProperty(available_movies[phase], "cond", conds[e]);
-                match =available_movies[phase].splice(_.sample(tmp_matches),1); 
-                console.log(match[0].poster)
-                return match
-            
-                // Add movie to choices_by_phase
-                // Remove movie from available_movies
-            })]);
-        
-        // Clean up output
-        choices_by_phase[phase][trial] = choices_by_phase[phase][trial].map(function(e) {return e[0]});
+available_movies = [[],[]];
+for (phase = 0; phase < available_movies.length; phase++) {
+    for (c = 0; c < conds.length; c++) {
+        tmp_array = $.grep(movies_by_phase[phase], function(e){ return e.cond == conds[c];});
+        while (tmp_array.length < 14) {tmp_array = tmp_array.concat(tmp_array.slice(0,2));}
+        available_movies[phase].push(tmp_array.map(function(e){return e.poster}).shuffle());
     }
 }
 
+choices_by_phase = [[], []];
+for (phase = 0; phase < available_movies.length; phase++) {
+    for (trial = 0; trial < conditions_by_phase[phase].length; trial++) {
+        c = conditions_by_phase[phase][trial];
+        choices_by_phase[phase].push([available_movies[phase][c[0]].shift(), available_movies[phase][c[1]].shift()]);
+    }
+}
 
 
 ///// ——————————————————— GENERATE RESPONSES  ——————————————————— /////
@@ -419,6 +403,24 @@ var target_options =   [[0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7],
                         [6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [6, 7],
                         [7, 0], [7, 2], [7, 2], [7, 3], [7, 4], [7, 5], [7, 6]];
 
+
+// Array of indices matching target_options with conditions_by_phase
+var option_matches = [];
+
 // Function to assemble other-only task
-function prepare_other_choice(c) {
-};
+for (k = 0; k < conditions_by_phase[0].length; k ++) {
+    for (i = 0; i < target_options.length; i++){
+        if (conditions_by_phase[0][k][0] == target_options[i][0] & conditions_by_phase[0][k][1] == target_options[i][1]){
+            option_matches.push(i)}
+    }
+}
+
+/* TODO
+function generate_responses(target) {
+    tmp_responses = option_matches.map(function(e){return target_responses[target][0][e]});
+    for (i = 0; i < tmp_responses.length; i++) {
+        tmp_responses[i] = conditions_by_phase[0][i].indexOf(tmp_responses[i]);
+    }
+    return tmp_responses
+} 
+*/
