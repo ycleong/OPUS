@@ -211,3 +211,15 @@ table {
 	/* you could have a "range" which makes the slider to the left of the handle a different color from the background */
 	background: transparent;
 }
+
+.correct-answer {
+    border: 10px solid #66cdaa;
+}
+
+.wrong-answer {
+    border: 10px solid #FF4444;
+}
+
+.feedback {
+    border: 10px solid #0092ff;
+}

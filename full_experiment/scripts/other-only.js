@@ -97,12 +97,16 @@ function make_slides(f) {
     slides.choice_screen = slide({
         name: "choice_screen",
         present: choices_by_phase[0],
+        correct: exp.ans[0],
         present_handle: function(stim) {
             $(document).unbind('keydown');
             
             this.stim = stim;
+            this.right_ans = _s.correct.shift();
             exp.trialT = Date.now();
             var slide_name = "choice_screen";
+            var choice_posters = [' .left', ' .right'];
+            
             
             $(slide_name).show();
             
@@ -111,28 +115,33 @@ function make_slides(f) {
             
             $('#'+slide_name+' .left').show();
             $('#'+slide_name+' .right').show();
+            $('#'+slide_name+' .correct').hide();
+            $('#'+slide_name+' .incorrect').hide();
+            $('#'+slide_name+' .left img').removeClass('correct-answer wrong-answer');
+            $('#'+slide_name+' .right img').removeClass('correct-answer wrong-answer');
+            $('#'+slide_name+' .ans_feedback').html('<h2>&nbsp;</h2>');
 
             $(document).keydown(function(e) {
                 var keyCode = event.which;
                 
                 // If participant selects the option on the left (Z = 90)
-                if (keyCode == 90) {
+                if (keyCode == 90 | keyCode == 77) {
                     $(document).unbind('keydown');
                     var t = Date.now();
-                    _s.key = 0;
-                    _s.pick =  _s.stim[0];
-                    setTimeout(function(){$('#'+slide_name+' .right').hide()}, 50)
-                    setTimeout(function(){_s.nextTrial()},1500);
-                } 
-                // If participant selects the option on the right (M = 77)
-                else if (keyCode == 77) {
-                    $(document).unbind('keydown');
-                    _s.key = 1;
-                    _s.pick = _s.stim[1];
-                    setTimeout(function(){$('#'+slide_name+' .left').hide()}, 50);
-                    setTimeout(function(){_s.nextTrial()},1500);
-                }});
-        },
+                    _s.key = ((keyCode == 90)?  0 : 1)
+                    _s.pick = _s.stim[_s.key];
+                                        
+                    if (_s.key == _s.right_ans) {
+                        $('#'+slide_name+choice_posters[_s.key]+" img").addClass('correct-answer');
+                        $('#'+slide_name+' .ans_feedback').html('<h2 style = "text-align: center; color: #66cdaa;">Correct!</h2>');
+                    } else {
+                        $('#'+slide_name+choice_posters[_s.key]+" img").addClass('wrong-answer');
+                        $('#'+slide_name+' .ans_feedback').html('<h2 style = "text-align: center; color: #FF4444;">Incorrect!</h2>');
+                    }
+                    
+                    //setTimeout(function(){$('#'+slide_name+choice_posters[((_s.key == 0)? 1 : 0)]).hide()}, 50);
+                    setTimeout(function(){_s.nextTrial()},2000);
+                }})}, 
         
         nextTrial: function() {
         this.log_responses();
@@ -144,6 +153,8 @@ function make_slides(f) {
             "options": [this.stim[0], this.stim[1]],
             "condition": conditions_by_phase[0].shift(),
             "key": this.key,
+            "ans": this.right_ans,
+            "correct": this.key == this.right_ans,
             "choice": this.pick,
             "rt_in_seconds": (Date.now() - exp.trialT)/1000
         });
@@ -151,19 +162,23 @@ function make_slides(f) {
     
     slides.halfway_there = slide({name: "halfway_there"});
  
-    slides.comprehension2 = q_template("comprehension2", 1);
+    slides.comprehension2 = q_template("comprehension", 1);
 
-    slides.choice_controls2 = slide({name: "choice_controls2"});
+    slides.choice_controls2 = slide({name: "choice_controls"});
     
     slides.choice_screen2 = slide({
         name: "choice_screen",
         present: choices_by_phase[1],
+        correct: exp.ans[1],
         present_handle: function(stim) {
             $(document).unbind('keydown');
             
             this.stim = stim;
+            this.right_ans = _s.correct.shift();
             exp.trialT = Date.now();
             var slide_name = "choice_screen";
+            var choice_posters = [' .left', ' .right'];
+            
             
             $(slide_name).show();
             
@@ -172,28 +187,26 @@ function make_slides(f) {
             
             $('#'+slide_name+' .left').show();
             $('#'+slide_name+' .right').show();
+            $('#'+slide_name+' .correct').hide();
+            $('#'+slide_name+' .incorrect').hide();
+            $('#'+slide_name+' .left img').removeClass('correct-answer wrong-answer');
+            $('#'+slide_name+' .right img').removeClass('correct-answer wrong-answer');
+            $('#'+slide_name+' .ans_feedback').html('<h2>&nbsp;</h2>');
 
             $(document).keydown(function(e) {
                 var keyCode = event.which;
                 
                 // If participant selects the option on the left (Z = 90)
-                if (keyCode == 90) {
+                if (keyCode == 90 | keyCode == 77) {
                     $(document).unbind('keydown');
                     var t = Date.now();
-                    _s.key = 0;
-                    _s.pick =  _s.stim[0];
-                    setTimeout(function(){$('#'+slide_name+' .right').hide()}, 50)
-                    setTimeout(function(){_s.nextTrial()},1500);
-                } 
-                // If participant selects the option on the right (M = 77)
-                else if (keyCode == 77) {
-                    $(document).unbind('keydown');
-                    _s.key = 1;
-                    _s.pick = _s.stim[1];
-                    setTimeout(function(){$('#'+slide_name+' .left').hide()}, 50);
-                    setTimeout(function(){_s.nextTrial()},1500);
-                }});
-        },
+                    _s.key = ((keyCode == 90)?  0 : 1)
+                    _s.pick = _s.stim[_s.key];
+                    
+                    setTimeout(function(){$('#'+slide_name+choice_posters[((_s.key == 0)? 1 : 0)]).hide()}, 50);
+                    setTimeout(function(){_s.nextTrial()},2000);
+                }})}, 
+        
         nextTrial: function() {
         this.log_responses();
         _stream.apply(this);
@@ -204,6 +217,8 @@ function make_slides(f) {
             "options": [this.stim[0], this.stim[1]],
             "condition": conditions_by_phase[1].shift(),
             "key": this.key,
+            "ans": this.right_ans,
+            "correct": this.key == this.right_ans,
             "choice": this.pick,
             "rt_in_seconds": (Date.now() - exp.trialT)/1000
         });
@@ -251,6 +266,8 @@ function init() {
       condition_order: conditions_by_phase,
       choice_order: choices_by_phase
   };
+    exp.target = _.sample([0, 1, 2, 3, 4]);
+    exp.ans = get_ans(exp.target);
   exp.system = {
       Browser : BrowserDetect.browser,
       OS : BrowserDetect.OS,
@@ -260,10 +277,9 @@ function init() {
       screenUW: exp.width
     };
   //blocks of the experiment:
-    //exp.structure=['i0', 'comprehension', 'choice_controls', 'choice_screen', 'halfway_there',
-    //               'comprehension2', 'choice_controls2', 'choice_screen2',
-    //               'survey', 'thanks'];
-    exp.structure = ['i0', 'comprehension', 'survey', 'thanks'];
+    exp.structure=['i0', 'comprehension', 'choice_controls', 'choice_screen', 'halfway_there',
+                   'comprehension2', 'choice_controls2', 'choice_screen2',
+                   'survey', 'thanks'];
   exp.data_trials = [];
   //make corresponding slides:
   exp.slides = make_slides(exp);
