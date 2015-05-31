@@ -118,7 +118,7 @@ function make_slides(f) {
             $('#'+slide_name+' .incorrect').hide();
             $('#'+slide_name+' .left img').removeClass('correct-answer wrong-answer');
             $('#'+slide_name+' .right img').removeClass('correct-answer wrong-answer');
-            $('#'+slide_name+' .ans_feedback').html('<h2>&nbsp;</h2>');
+            $('#'+slide_name+' .ans_feedback').html("<h2 style='text-align:center;'>What would they rather watch?</h2>");
 
             $(document).keydown(function(e) {
                 var keyCode = event.which;
@@ -190,7 +190,7 @@ function make_slides(f) {
             $('#'+slide_name+' .incorrect').hide();
             $('#'+slide_name+' .left img').removeClass('correct-answer wrong-answer');
             $('#'+slide_name+' .right img').removeClass('correct-answer wrong-answer');
-            $('#'+slide_name+' .ans_feedback').html('<h2>&nbsp;</h2>');
+            $('#'+slide_name+' .ans_feedback').html("<h2 style='text-align:center;'>What would they rather watch?</h2>");
 
             $(document).keydown(function(e) {
                 var keyCode = event.which;
@@ -203,7 +203,7 @@ function make_slides(f) {
                     _s.pick = _s.stim[_s.key];
                     
                     setTimeout(function(){$('#'+slide_name+choice_posters[((_s.key == 0)? 1 : 0)]).hide()}, 50);
-                    setTimeout(function(){_s.nextTrial()},2000);
+                    setTimeout(function(){_s.nextTrial()},1500);
                 }})}, 
         
         nextTrial: function() {
