@@ -37,6 +37,7 @@ function q_template(slide_name, phase) {
       },
       
       select: function() {
+          this.attempts += 1;
           ans = $("#"+slide_name+" label[for='"+$('input:checked').attr('class')+"']");
           if (Date.now()-exp.trialT < 5000) {
               $('#'+slide_name+' .warning').show();
@@ -44,14 +45,12 @@ function q_template(slide_name, phase) {
               $('#'+slide_name+' .warning').hide();
               this.clicks.push(tmp_alts[ans_labels.indexOf($(ans).attr('for'))]);
               if (ans.text() == this.stim.correct & !this.complete) {
-                  this.attempts += 1;
                   this.complete = true;
                   console.log("Correct! " + this.attempts);
                   $('#'+slide_name+' .incorrect').hide();
                   $('#'+slide_name+' .correct').show();
                   $('#'+slide_name+' .continue').show();
               } else if (!this.complete) {
-                  this.attempts += 1;
                   console.log("Incorrect! " + this.attempts);
                   $('#'+slide_name+' .correct').hide();
                   $('#'+slide_name+' .incorrect').show();
