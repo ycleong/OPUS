@@ -260,10 +260,10 @@ function init() {
       screenUW: exp.width
     };
   //blocks of the experiment:
-    exp.structure=['i0', 'comprehension', 'choice_controls', 'choice_screen', 'halfway_there',
-                   'comprehension2', 'choice_controls2', 'choice_screen2',
-                   'survey', 'thanks'];
-
+    //exp.structure=['i0', 'comprehension', 'choice_controls', 'choice_screen', 'halfway_there',
+    //               'comprehension2', 'choice_controls2', 'choice_screen2',
+    //               'survey', 'thanks'];
+    exp.structure = ['i0', 'comprehension', 'survey', 'thanks'];
   exp.data_trials = [];
   //make corresponding slides:
   exp.slides = make_slides(exp);

@@ -401,26 +401,31 @@ var target_options =   [[0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7],
                         [4, 0], [4, 1], [4, 2], [4, 3], [4, 5], [4, 6], [4, 7],
                         [5, 0], [5, 1], [5, 2], [5, 3], [5, 4], [5, 6], [5, 7],
                         [6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [6, 7],
-                        [7, 0], [7, 2], [7, 2], [7, 3], [7, 4], [7, 5], [7, 6]];
+                        [7, 0], [7, 1], [7, 2], [7, 3], [7, 4], [7, 5], [7, 6]];
 
 
-// Array of indices matching target_options with conditions_by_phase
-var option_matches = [];
+// Helper functions
+function compareArrays(array1, array2){
+    return array1.length == array2.length && array1.every(function(e, i) {return e == array2[i];});
+}
 
-// Function to assemble other-only task
-for (k = 0; k < conditions_by_phase[0].length; k ++) {
-    for (i = 0; i < target_options.length; i++){
-        if (conditions_by_phase[0][k][0] == target_options[i][0] & conditions_by_phase[0][k][1] == target_options[i][1]){
-            option_matches.push(i)}
+function findIndexOfArray(big_array, target_array){
+    for (i = 0; i < big_array.length; i++) {
+        if (compareArrays(big_array[i], target_array)){
+            return i
+        }
     }
 }
 
-/* TODO
-function generate_responses(target) {
-    tmp_responses = option_matches.map(function(e){return target_responses[target][0][e]});
-    for (i = 0; i < tmp_responses.length; i++) {
-        tmp_responses[i] = conditions_by_phase[0][i].indexOf(tmp_responses[i]);
+// Array of indices matching target_options with conditions_by_phase
+option_matches = [0,1].map(function(i){return conditions_by_phase[i].map(function(e){return findIndexOfArray(target_options,e)})});
+target = 0;
+function get_ans(target){
+    ans = [[],[]];
+    for (phase = 0; phase < ans.length; phase++) {
+        for (i = 0; i < 56; i++) {
+            ans[phase].push(conditions_by_phase[phase][i].indexOf(target_responses[target][phase][option_matches[phase][i]]));
+        }
     }
-    return tmp_responses
-} 
-*/
+    return ans
+}
