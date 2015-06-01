@@ -120,7 +120,7 @@ function make_slides(f) {
             $('#'+slide_name+' .right img').removeClass('correct-answer wrong-answer');
             $('#'+slide_name+' .ans_feedback').html("<h2 style='text-align:center;'>What would they rather watch?</h2>");
 
-            $(document).keydown(function(e) {
+            $(document).keydown(function(event) {
                 var keyCode = event.which;
                 
                 // If participant selects the option on the left (Z = 90)
@@ -193,7 +193,7 @@ function make_slides(f) {
             $('#'+slide_name+' .ans_feedback').html("<h2 style='text-align:center;'>What would they rather watch? "+
                                                     "(Remember: you're choosing for the person you just saw.)</h2>");
 
-            $(document).keydown(function(e) {
+            $(document).keydown(function(event) {
                 var keyCode = event.which;
                 
                 // If participant selects the option on the left (Z = 90)
