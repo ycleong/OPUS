@@ -190,7 +190,8 @@ function make_slides(f) {
             $('#'+slide_name+' .incorrect').hide();
             $('#'+slide_name+' .left img').removeClass('correct-answer wrong-answer');
             $('#'+slide_name+' .right img').removeClass('correct-answer wrong-answer');
-            $('#'+slide_name+' .ans_feedback').html("<h2 style='text-align:center;'>What would they rather watch?</h2>");
+            $('#'+slide_name+' .ans_feedback').html("<h2 style='text-align:center;'>What would they rather watch? "+
+                                                    "(Remember: you're choosing for the person you just saw.)</h2>");
 
             $(document).keydown(function(e) {
                 var keyCode = event.which;
@@ -245,7 +246,8 @@ function make_slides(f) {
           exp.data= {
               "trials" : exp.data_trials,
               "system" : exp.system,
-              "condition" : exp.condition,
+              "condition" : exp.target,
+              "counterbalancing": exp.counterbalancing,
               "subject_information" : exp.subj_data,
               "time_in_minutes" : (Date.now() - exp.startT)/60000
           };
