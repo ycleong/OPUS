@@ -1,8 +1,8 @@
 function q_template(slide_name, phase) {
-    return slide({
-      name: slide_name,
-      present: movies_by_phase[phase],
-      present_handle: function(stim){
+  return slide({
+    name: slide_name,
+    present: movies_by_phase[phase],
+    present_handle: function(stim){
           // Present movie + question
           $('#'+slide_name+' .movietitle').html(stim.title);
           $('#'+slide_name+' .movieplot').html(stim.plot);
@@ -26,56 +26,90 @@ function q_template(slide_name, phase) {
           this.complete = false;
           exp.trialT = Date.now();
           
-          //$('#'+slide_name+' .question').hide();
-          $('#'+slide_name+' .warning').hide();
+          $('#'+slide_name+' .question').hide();
+          $('#'+slide_name+' .warning1').hide();
+          $('#'+slide_name+' .warning2').hide();
           $('#'+slide_name+' .correct').hide();
           $('#'+slide_name+' .incorrect').hide();
-          $('#'+slide_name+' .continue').hide();
+          $('#'+slide_name+' .slider_container').show();
+          //$('#'+slide_name+' .continue').hide();
           
           //this.init_sliders();
           //exp.sliderPost = null; //erase current slider value
-      },
-      
-      select: function() {
+        },
+
+        select: function() {
           ans = $("#"+slide_name+" label[for='"+$('input:checked').attr('class')+"']");
-          if (Date.now()-exp.trialT < 5000) {
-              $('#'+slide_name+' .warning').show();
+          /* if (Date.now()-exp.trialT < 5000) {
+            $('#'+slide_name+' .warning').show();
           } else {
-              $('#'+slide_name+' .warning').hide();
-              this.clicks.push(tmp_alts[ans_labels.indexOf($(ans).attr('for'))]);
-              if (ans.text() == this.stim.correct & !this.complete) {
-                  this.attempts += 1;
-                  this.complete = true;
-                  console.log("Correct! " + this.attempts);
-                  $('#'+slide_name+' .incorrect').hide();
-                  $('#'+slide_name+' .correct').show();
-                  $('#'+slide_name+' .continue').show();
-              } else if (!this.complete) {
-                  this.attempts += 1;
-                  console.log("Incorrect! " + this.attempts);
-                  $('#'+slide_name+' .correct').hide();
-                  $('#'+slide_name+' .incorrect').show();
-          }}},
-//    init_sliders: function() {
-//            utils.make_slider('#'+slide_name+' .slider', function(event, ui) {
-//                exp.sliderPost = ui.value;
-//            })},
-      
-      nextTrial: function() {
-          $("." + ans.attr('for')).prop('checked', false)
-          exp.RT = Date.now() - exp.trialT;
-          this.log_responses();
-          _stream.apply(this);
-      },
-      
-      log_responses: function() {
-          exp.data_trials.push({
-             "movie": this.stim.poster,
-			 "attempts": this.attempts,
-              "clicks": this.clicks,
-             "rt_in_seconds": (Date.now() - exp.trialT)/1000
-			 });
-      }});}
+            $('#'+slide_name+' .warning').hide(); */
+
+            this.clicks.push(tmp_alts[ans_labels.indexOf($(ans).attr('for'))]);
+
+            $('#'+slide_name+' .continue').show();
+
+            if (ans.text() == this.stim.correct){
+              this.mcq_correct = 1;
+            } else {
+              this.mcq_correct = 0;
+            }
+
+            /* if (ans.text() == this.stim.correct & !this.complete) {
+              this.attempts += 1;
+              this.complete = true;
+              console.log("Correct! " + this.attempts);
+              $('#'+slide_name+' .incorrect').hide();
+              $('#'+slide_name+' .correct').show();
+              $('#'+slide_name+' .continue').show();
+            } else if (!this.complete) {
+              this.attempts += 1;
+              console.log("Incorrect! " + this.attempts);
+              $('#'+slide_name+' .correct').hide();
+              $('#'+slide_name+' .incorrect').show();
+            }*/
+            }, 
+            
+            /*init_sliders: function() {
+              utils.make_slider('#single_slider', function(event, ui) {
+                exp.sliderPost = ui.value;
+              })},*/
+
+              showQuestion: function(){
+                this.like = $('input[class="like"]:checked').val();
+                if (this.like == undefined){
+                  $('#'+slide_name+' .warning1').show();
+                } else if (Date.now()-exp.trialT < 5000) {
+                  $('#'+slide_name+' .warning2').show();
+                } else {
+                $('.like').prop('checked', false);
+                $('#'+slide_name+' .warning1').hide();
+                $('#'+slide_name+' .warning2').hide();
+                $('#'+slide_name+' .question').show();
+                $('#'+slide_name+' .slider_container').hide();
+                $('#'+slide_name+' .continue').hide();
+                this.rt_like = (Date.now() - exp.trialT)/1000;
+                }
+              },
+              
+              nextTrial: function() {
+                $("." + ans.attr('for')).prop('checked', false)
+                exp.RT = Date.now() - exp.trialT;
+                this.log_responses();
+                _stream.apply(this);
+              },
+
+              log_responses: function() {
+                exp.data_trials.push({
+                 "movie": this.stim.poster,
+                 "liking": this.like,
+                 "mcq_score": this.mcq_correct,
+                 "attempts": this.attempts,
+                 "clicks": this.clicks,
+                 "rt_in_seconds_liking": this.rt_like,
+                 "rt_in_seconds_mcq": ((Date.now() - exp.trialT)/1000 - this.rt_like)
+               });
+              }});}
 
 function make_slides(f) {
   var   slides = {};

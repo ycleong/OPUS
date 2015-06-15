@@ -176,6 +176,15 @@ text-align: right;
 float: right;
 }
 
+.table_right{
+    text-align: right;
+}
+
+.center{
+text-align: center;
+width: 80px;
+}
+
 .slider {
   /* default is width 400 and margin 10 */
 	width: 400;
@@ -185,31 +194,6 @@ float: right;
 table {
 	/* center all tables by default */
 	margin: auto;
-}
-
-.slider_table .left {
-	display: inline;
-	text-align: left;
-	float: left;
-}
-
-.slider_table .right {
-	display: inline;
-	text-align: right;
-	float: right;
-}
-
-.thin {
-	height: 50px;
-}
-
-.slider_target {
-	text-align: right;
-}
-
-.ui-slider-range {
-	/* you could have a "range" which makes the slider to the left of the handle a different color from the background */
-	background: transparent;
 }
 
 .correct-answer {
