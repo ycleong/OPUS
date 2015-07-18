@@ -1,0 +1,227 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Which would you rather watch?</title>
+
+    <!-- external general utilities -->
+    <script src="scripts/jquery-1.11.2.min.js "></script>
+    <script src="scripts/jquery-ui.min.js"></script>
+    <script src="scripts/underscore-min.js"></script>
+    
+    <!-- cocolab experiment logic -->
+    <script src="scripts/exp-V2.js"></script>
+    <script src="scripts/stream-V2.js"></script>
+
+    <!-- cocolab general utilities -->
+    <script src="scripts/mmturkey.js "></script>
+    <script src="scripts/browserCheck.js"></script>
+    <script src="scripts/utils.js"></script>
+
+    <!-- experiment specific helper functions -->
+    <!-- <script src="scripts/fingerprint.js"></script> -->
+
+    <!--CSS-->
+	<link href="styles/experiment_style.css" rel="stylesheet" type="text/css">
+    
+    <!--experiment file-->
+    <script type="text/javascript" src="scripts/other-only.js"></script>
+    <script type="text/javascript" src="scripts/opus-counterbalancer.js"></script>
+    
+</head>
+
+<body onload="init();">
+	<noscript>This task requires Javascript</noscript>
+    
+<div class="slide" id="i0">
+    
+	<div id = "logo"><img src="images/logo.png" /></div>
+    <p>Carefully read the instructions below, and answer the following questions. NOTE: Please answer ALL the questions to the best of your ability. If your answers indicate that you haven’t watched our stimuli or have read the instructions, we will be unable to accept your response. Thank you for contributing to a better understanding of how the mind works!</p>
+
+    <p class="legal">This HIT is part of a scientific research project conducted by the Social Learning Lab at Stanford and has been approved by the IRB of Stanford University. Your decision to complete this HIT is voluntary. We will only have access to your worker ID and no other information to identify you. The only other information we will have, in addition to your response, is the time at which you completed the survey and the amount of time you spent to complete it. The results of the research may be presented at scientific meetings or published in scientific journals. Clicking on the ‘SUBMIT’ button on the bottom of this page indicates that you are at least 18 years of age, and agree to complete this HIT voluntarily.</p>
+        
+    <p>In this HIT, you will be shown 32 concepts for movies. A previous participant has already gone through all of the movies and picked which movies they would rather watch. Your job is to figure out what this person likes!</p>
+    
+    <p>This HIT will be composed of two phases, in which you will complete two tasks:</p>
+    <img id = "flowchart" src='instructions/instructions_diagram.png' />
+    
+    <p>The HIT should take 20 minutes. Please pay attention. Thanks!</p>
+    <button id="start_button" type="button">Start Experiment</button>
+</div>
+
+<div class = "slide" id = "comprehension">
+    <h2>Please read the plot of the movie and answer the following question:</h2>
+    <div class = "movie-container">
+        <div class = "poster">
+            <img class = "poster-image" src = "images/23rdcenturyromance.png"/>
+        </div>
+        <div class = "plot">
+            <h3 class="movietitle"></h3>
+            <p class="movieplot"></p>
+            <p class="tags"></p>
+        </div>
+        
+        <div class = "question">
+            <div class = "rating">
+            <h4 class = "questiontext">How much would you like to watch this movie?</h3>
+            <div class="wrap">
+              <form action="">
+                <ul class='likert'>
+                  <li>
+                    <input type="radio" name="likert" value="1" onclick = "_s.select()">
+                    <label>1<br/>Not at all</label>
+                  </li>
+                  <li>
+                    <input type="radio" name="likert" value="2" onclick = "_s.select()">
+                    <label>2</label>
+                  </li>
+                  <li>
+                    <input type="radio" name="likert" value="3" onclick = "_s.select()">
+                    <label>3</label>
+                  </li>
+                  <li>
+                    <input type="radio" name="likert" value="4" onclick = "_s.select()">
+                    <label>4</label>
+                  </li>
+                  <li>
+                    <input type="radio" name="likert" value="5" onclick = "_s.select()">
+                    <label>5<br />Very much</label>
+                  </li>
+                </ul>
+              </form>
+            </div>
+            
+            
+            <h3 class ="warning" style = "color: #6f6d6d;">Please take a little more time to read the plot.</h3>
+            </div>
+        
+        <div class = "check">
+            <h4>Please select the 3 tags that were used to describe this movie.</h3>
+            <table id = "check_table">
+    <tr>
+        <td><input type="radio" name="valence" value="positive">Positive</input></td>
+        <td><input type="radio" name="valence" value="negative">Negative</input></td>
+    </tr>
+    <tr>
+        <td><input type="radio" name="setting" value="historical">Historical</input></td>
+        <td><input type="radio" name="setting" value="futuristic">Futuristic</input></td>
+    </tr>
+    <tr>
+        <td><input type="radio" name="genre" value="action">Action</input></td>
+        <td><input type="radio" name="genre" value="romance">Romance</input></td>
+    </tr>
+</table>
+        </div>
+<button id = "checkQ" class="continue" onclick="_s.checkQ()">Next question</button>
+<button id = "next_movie" class="continue" onclick="_s.nextTrial()">Continue</button>
+</div>
+            
+           
+        
+    </div>
+</div>
+    
+<div class = "slide" id = "phase1">
+    <h1 onclick = "_s.verify()">Phase 1: Learn what they liked</h1>
+    
+    <p>Now you're going to observe the choices of a Turker who's already seen the movies, and you will learn what kind of movies they like. For the sake of anonymity, we'll call this person Turker.</p>
+    
+    <p>When Turker took this task, he or she saw pairs of movies and chose which one of the two they would rather watch. Your job is to observe Turker's choices. When you see a border appear around the movie that Turker chose, press the same key that they pressed: press <strong>Z</strong> if they chose the movie on the left, and <strong>M</strong> if they chose the movie on the right.</p>
+    
+    <img id = "phase1_demo" style = "width: 350px" class = "choice_instructions"/>
+    
+    <p>Please pay close attention. At the end of this HIT, you will be tested on what you've learned about Turker, and you will receive a bonus for answering correctly. If you've understood the instructions, please click on the the title of this page.</p>
+    
+    <button class="continue" onclick="_s.nextTrial()">Continue</button>
+</div>
+
+<div class="slide" id="choice_screen">
+    <div class = "ans_feedback">
+        <h1 style="text-align: center;">&nbsp;&nbsp;&nbsp;</h1>
+    </div>
+    <div class = "choice_pos">
+        <div class ="left"><p id = "poster1_tags"></p><img class="Poster1" height = "350px"></img></div>
+    <div class ="right"><p id = "poster2_tags"></p><img class="Poster2" height = "350px"></img></div>
+    </div>
+</div>
+
+<div class="slide" id="halfway_there">
+    <h1>Doing great!</h1>
+    <p>Please press the button below to continue to the next phase. Remember, in this phase you'll see an entirely new set of movies, and you will have to predict what Turker chose. You will not receive feedback in this phase; however, if you choose the same movies that Turker actually picked, you will receive a bonus of up to $1.</p>
+        
+        <p>Thanks again for all of your hard work!</p>
+    
+    <button class="continue" onclick="exp.go()">Continue</button>
+</div>
+
+<div class = "slide" id = "phase2">
+    <h1>Phase 2: How well do you know Turker?</h1>
+    
+    <p>Now you're going to see pairs of the new movies, and you will have to <strong>guess which movie Turker picked</strong>. Press <strong>Z</strong> to choose the movie on the left, and <strong>M</strong> to choose the movie on the right.</p>
+    
+    <img id = "phase2_demo" style = "width: 350px" class = "choice_instructions"/>
+    
+    <p>You will not receive feedback for your answers. However, if you choose the same movie that Turker chose, that will add to your bonus of up to $1, so please answer carefully!</p>
+        
+    <button class="continue" onclick="exp.go()">Continue</button>
+</div>
+
+<div class="slide" id="survey">
+        <h1>Almost done!</h1>
+      <p class="info">Answering these questions is optional, but will help us understand your answers.</p>
+    
+      <p>Did you read the instructions and do you think you did the HIT correctly?</p>
+      <label><input type="radio"  name="assess" value="No"/>No</label>
+      <label><input type="radio"  name="assess" value="Yes"/>Yes</label>
+      <label><input type="radio"  name="assess" value="Confused"/>I was confused</label>
+    
+    <p>How would you describe the kinds of movies that Turker likes?</p>
+    <textarea id="preferences" cols="50" rows="5">
+</textarea>
+
+
+      <p>Gender:
+        <select id="gender">
+          <label><option value=""/></label>
+          <label><option value="Male"/>Male</label>
+          <label><option value="Female"/>Female</label>
+          <label><option value="Other"/>Other</label>
+        </select>
+      </p>
+
+      <p>Age: <input type="text" id="age"/></p>
+
+      <p>Level Of Education:
+        <select id="education">
+          <label><option value="-1"/></label>
+          <label><option value="0"/>Some High School</label>
+          <label><option value="1"/>Graduated High School</label>
+          <label><option value="2"/>Some College</label>
+          <label><option value="3"/>Graduated College</label>
+          <label><option value="4"/>Hold a higher degree</label>
+        </select>
+      </p>
+
+      <p>Native Language: <input type="text" id="language" /></p>
+      <label>(the language(s) spoken at home when you were a child)</label>
+
+      <p>Did you enjoy the hit?</p>
+      <select id="enjoyment">
+        <label><option value="-1"></option></label>
+        <label><option value="0">Worse than the Average HIT</option></label>
+        <label><option value="1" >An Average HIT</option></label>
+        <label><option value="2">Better than average HIT</option></label>
+      </select>
+
+      <p>We would be interested in any comments you have about this experiment. Please type them here:</p>
+      <textarea id="comments" rows="3" cols="50"></textarea>
+      <br/>
+      <button onclick="_s.submit()">Submit</button>
+  </div>
+
+<div class="slide" id ="thanks">
+    <h1>Thanks for your time!</h1>
+</div>
+    
+</body>
+</html>

@@ -97,6 +97,11 @@ button {
 }
 
 /* EXPERIMENT-SPECIFIC STYLES */
+#flowchart {
+    width: 600px;
+    margin: 0 auto;
+    display: block;
+}
 h2 {
     font-size: 12pt;
 }
@@ -141,9 +146,15 @@ input[type="radio"] {
 }
 
 /* CHOICE TASK */
-#choice_controls, #choice_screen, #choice_controls2, #choice_screen2 {
+#phase1, #phase2, #choice_screen {
     background-color: #000;
     color: #FFF
+}
+
+.ans_feedback h1 {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: x-large;
+    min-height: 40px;
 }
 
 .choice_instructions {
@@ -204,6 +215,79 @@ table {
     border: 10px solid #FF4444;
 }
 
-.feedback {
-    border: 10px solid #0092ff;
+.target-answer {
+    border: 10px solid #98b4ff;
+}
+
+.unselected {
+    border: 10px solid #000;
+}
+
+#poster1_tags, #poster2_tags{
+    text-align: center;
+}
+
+/* MEET THE MOVIES LIKERT SCALE */
+#comprehension h4 {
+    text-align: center;
+}
+
+.questiontext {
+    text-align: center;
+}
+
+h1.likert-header {
+  padding-left:4.25%;
+  margin:20px 0 0;
+}
+form .likert {
+  list-style:none;
+  width:100%;
+  margin:0;
+  padding:0 0 35px;
+  display:block;
+  border-bottom:2px solid #efefef;
+}
+form .likert:last-of-type {border-bottom:0;}
+form .likert:before {
+  content: '';
+  position:relative;
+  top:11px;
+  left:9.5%;
+  display:block;
+  background-color:#efefef;
+  height:4px;
+  width:78%;
+}
+form .likert li {
+  display:inline-block;
+  width:19%;
+  text-align:center;
+  vertical-align: top;
+}
+form .likert li input[type=radio] {
+  display:block;
+  position:relative;
+  top:0;
+  left:50%;
+  margin-left:-6px;
+  
+}
+form .likert li label {width:100%;}
+
+#check_table {
+    width: 300px;
+    margin: 0 auto;
+}
+
+#check_table td {
+    padding: 5px 10px;
+}
+
+.question {
+    padding-bottom: 20px;
+}
+
+#checkQ {
+    background-color: #e0cbff;
 }
